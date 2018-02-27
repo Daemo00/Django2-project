@@ -1,0 +1,25 @@
+{% extends "polls/base.html" %}
+
+{% block title %}{{ question }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'polls:index' %}">Polls</a>
+    &rsaquo; <a href="{% url 'polls:detail' question.id %}">Detail</a>
+    {% if title %} &rsaquo; {{ title }}{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% load poll_extras %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice|lower_upper }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>
+{% endblock %}

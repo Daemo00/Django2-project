@@ -1,0 +1,22 @@
+{% extends "polls/base.html" %}
+
+{% block title %}{{ question }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'polls:index' %}">Polls</a>
+    &rsaquo; <a href="{% url 'polls:detail' question.id %}">Detail</a>
+    {% if title %} &rsaquo; {{ title }}{% endif %}
+    &rsaquo; Results
+</div>
+{% endblock %}
+
+{% block content %}
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+{% endblock %}
